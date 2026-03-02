@@ -1,0 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --primary: #ff6b00;
+    --primary-dark: #e65c00;
+    --secondary: #111827;
+    --light-bg: #f8fafc;
+    --white: #ffffff;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --radius: 18px;
+    --transition: all 0.35s ease;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--light-bg);
+    color: var(--text-dark);
+    scroll-behavior: smooth;
+}
+
+section {
+    padding: 100px 0;
+}
+
+.section-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: var(--primary) !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--text-dark) !important;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+/* ================= BUTTON ================= */
+.btn-orange {
+    background: linear-gradient(135deg, var(--primary), #ff9a3c);
+    color: #fff;
+    border-radius: 50px;
+    padding: 12px 30px;
+    border: none;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-orange:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(255,107,0,0.35);
+}
+
+/* ================= HERO ================= */
+.hero-premium {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #ffffff, #fff3e8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero-logo {
+    font-size: 6rem;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: var(--secondary);
+}
+
+.hero-logo span {
+    color: var(--primary);
+}
+
+.hero-caption {
+    font-size: 1.9rem;
+    margin-top: 25px;
+    font-weight: 500;
+}
+
+.hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    max-width: 650px;
+    margin: 25px auto;
+}
+
+/* ================= ABOUT ================= */
+.about-box {
+    background: var(--white);
+    padding: 50px;
+    border-radius: var(--radius);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.07);
+    transition: var(--transition);
+}
+
+.about-box:hover {
+    transform: translateY(-6px);
+}
+
+/* ================= SERVICE ================= */
+.service-box {
+    background: var(--white);
+    padding: 45px;
+    border-radius: var(--radius);
+    transition: var(--transition);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    text-align: center;
+}
+
+.service-box i {
+    font-size: 45px;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.service-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 35px 65px rgba(0,0,0,0.12);
+}
+
+/* ================= CATEGORY ================= */
+.category-box {
+    background: var(--white);
+    padding: 45px 25px;
+    border-radius: var(--radius);
+    transition: var(--transition);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    text-align: center;
+}
+
+.category-box:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 35px 65px rgba(0,0,0,0.15);
+}
+
+.category-icon {
+    width: 95px;
+    height: 95px;
+    background: linear-gradient(135deg, #fff4ec, #ffe3cf);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    font-size: 42px;
+    color: var(--primary);
+}
+
+/* ================= FOOD CARD ================= */
+.food-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: none;
+    transition: var(--transition);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.07);
+    background: var(--white);
+}
+
+.food-card img {
+    height: 230px;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.food-card-body {
+    padding: 20px;
+}
+
+.food-card h5 {
+    font-weight: 700;
+}
+
+.food-card p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.food-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 35px 70px rgba(0,0,0,0.15);
+}
+
+.food-card:hover img {
+    transform: scale(1.08);
+}
+
+/* ================= CTA ================= */
+.cta-section {
+    background: linear-gradient(135deg, #ff6b00, #ff9a3c);
+    padding: 90px 0;
+    color: white;
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-weight: 800;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    background: #111827;
+    color: #ddd;
+    padding: 50px 0;
+}
+
+.footer h5 {
+    color: white;
+    margin-bottom: 15px;
+}
+
+.footer a {
+    color: #bbb;
+}
+
+.footer a:hover {
+    color: var(--primary);
+}
+
+/* ================= ANIMATION ================= */
+.fade-in {
+    animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px) {
+
+    .hero-logo {
+        font-size: 3rem;
+        letter-spacing: 3px;
+    }
+
+    .hero-caption {
+        font-size: 1.3rem;
+    }
+
+    section {
+        padding: 70px 0;
+    }
+}
