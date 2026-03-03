@@ -10,6 +10,16 @@ use App\Models\OrderItem;
 use App\Models\MenuItem;
 
 class CheckoutController extends Controller
+    /**
+     * Show all payments for the logged-in customer
+     */
+    public function myPayments()
+    {
+        $payments = \App\Models\Payment::whereHas('order', function($q) {
+            $q->where('user_id', auth()->id());
+        })->with('order')->latest()->get();
+        return view('customer.payments', compact('payments'));
+    }
 {
     /*
     |--------------------------------------------------------------------------
@@ -43,6 +53,7 @@ class CheckoutController extends Controller
 
     $orderNumber = 'ORD-' . strtoupper(\Illuminate\Support\Str::random(6));
 
+
     $order = Order::create([
         'order_number' => $orderNumber,
         'user_id' => auth()->id(),
@@ -51,6 +62,22 @@ class CheckoutController extends Controller
         'payment_method' => $request->payment_method,
         'payment_type' => $request->payment_type,
         'payment_status' => $request->payment_method == 'online' ? 'paid' : 'pending',
+    ]);
+
+    // Calculate total amount
+    $totalAmount = 0;
+    foreach ($cart as $id => $item) {
+        $totalAmount += $item['price'] * $item['quantity'];
+    }
+
+    // Create payment record
+    \App\Models\Payment::create([
+        'order_id' => $order->id,
+        'payment_method' => $request->payment_method,
+        'transaction_id' => $request->transaction_id ?? null,
+        'payment_status' => $request->payment_method == 'online' ? 'paid' : 'pending',
+        'amount' => $totalAmount,
+        'paid_at' => $request->payment_method == 'online' ? now() : null,
     ]);
 
     foreach ($cart as $id => $item) {

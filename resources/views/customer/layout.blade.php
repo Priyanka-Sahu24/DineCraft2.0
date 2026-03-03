@@ -71,6 +71,35 @@ data-bs-target="#navbarNav">
 </div>
 </nav>
 
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/login">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-orange w-100">Login</button>
+                </form>
+                <div class="mt-3 text-center">
+                    <a href="/register">New user? Register here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ================= PAGE CONTENT ================= -->
 <main>
     @yield('content')
@@ -101,5 +130,39 @@ data-bs-target="#navbarNav">
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function showLoginModal() {
+    setTimeout(function() {
+        var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        loginModal.show();
+    }, 300);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var isGuest = {{ Auth::check() ? 'false' : 'true' }};
+    if (isGuest) {
+        var selectors = [
+            'a[href="/cart"]',
+            'a[href="/reservations"]',
+            'a[href="/orders"]',
+            'a[href*="my.orders"]',
+            'a[href="{{ route('cart.index', [], false) }}"]',
+            'a[href="{{ route('reservation', [], false) }}"]',
+            'a[href="{{ route('my.orders', [], false) }}"]'
+        ];
+        var links = document.querySelectorAll(selectors.join(','));
+        links.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                showLoginModal();
+            });
+        });
+    }
+});
+</script>
 </body>
 </html>

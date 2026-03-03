@@ -84,6 +84,11 @@
                 Orders
     </a>
 
+     <a href="{{ route('admin.payments') }}"
+         class="nav-link {{ request()->routeIs('admin.payments') ? 'active' : '' }}">
+                     Payments
+     </a>
+
     <a href="{{ route('admin.reservations.index') }}"
        class="nav-link {{ request()->routeIs('admin.reservations*') ? 'active' : '' }}">
                 Reservations

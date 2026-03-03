@@ -38,6 +38,47 @@ h2, h3 {
     z-index: 100;
 }
 /* Classy Glassmorphism Sidebar */
+
+/* Payments Page Custom Styles */
+.payments-header {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fd7e14;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 8px #ffd6b3;
+}
+.payments-card {
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border: none;
+}
+.payments-table th {
+    background: #fd7e14;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+}
+.payments-table td {
+    background: #fff8f1;
+    border: none;
+}
+.payments-table tr {
+    transition: background 0.2s;
+}
+.payments-table tr:hover {
+    background: #ffe5cc;
+}
+.payments-total {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #28a745;
+}
+.payments-section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fd7e14;
+    margin-bottom: 0.5rem;
+}
 .sidebar {
     width: 240px;
     height: 100vh;

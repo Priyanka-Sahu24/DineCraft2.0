@@ -97,6 +97,24 @@ class AdminController extends Controller
         $orderStatusCounts = $orderStatusData->pluck('total');
 
 
+        // ======================
+        // RECENT ACTIVITY
+        // ======================
+        $recentOrders = Order::with('user')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $recentReservations = \App\Models\Reservation::with('user')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $recentLeaves = \App\Models\Leave::with('staff.user')
+            ->latest()
+            ->take(5)
+            ->get();
+
         return view('admin.dashboard', compact(
             'totalStaff',
             'totalTables',
@@ -109,7 +127,10 @@ class AdminController extends Controller
             'orderTypeLabels',
             'orderTypeCounts',
             'orderStatusLabels',
-            'orderStatusCounts'
+            'orderStatusCounts',
+            'recentOrders',
+            'recentReservations',
+            'recentLeaves'
         ));
     }
 }

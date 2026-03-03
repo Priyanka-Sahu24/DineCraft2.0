@@ -102,21 +102,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><span class="badge bg-primary">Order</span></td>
-                                <td>Order #ORD-12345 placed by John Doe</td>
-                                <td>26 Feb 2026</td>
-                            </tr>
-                            <tr>
-                                <td><span class="badge bg-success">Reservation</span></td>
-                                <td>Table reserved by Jane Smith</td>
-                                <td>25 Feb 2026</td>
-                            </tr>
-                            <tr>
-                                <td><span class="badge bg-warning text-dark">Leave</span></td>
-                                <td>Leave request submitted by Staff #1002</td>
-                                <td>25 Feb 2026</td>
-                            </tr>
+                            @foreach($recentOrders as $order)
+                                <tr>
+                                    <td><span class="badge bg-primary">Order</span></td>
+                                    <td>Order #{{ $order->order_number }} placed by {{ $order->user->name ?? 'Unknown' }}</td>
+                                    <td>{{ $order->created_at->format('d M Y') }}</td>
+                                </tr>
+                            @endforeach
+                            @foreach($recentReservations as $reservation)
+                                <tr>
+                                    <td><span class="badge bg-success">Reservation</span></td>
+                                    <td>Table reserved by {{ $reservation->user->name ?? 'Unknown' }}</td>
+                                    <td>{{ $reservation->created_at->format('d M Y') }}</td>
+                                </tr>
+                            @endforeach
+                            @foreach($recentLeaves as $leave)
+                                <tr>
+                                    <td><span class="badge bg-warning text-dark">Leave</span></td>
+                                    <td>Leave request submitted by {{ $leave->staff->user->name ?? 'Staff #'.$leave->staff_id }}</td>
+                                    <td>{{ $leave->created_at->format('d M Y') }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

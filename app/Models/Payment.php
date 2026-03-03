@@ -25,4 +25,12 @@ class Payment extends Model
     {
         return $this->belongsTo(Order::class, 'order_id');
     }
+
+    // Payment belongs to user (customer) through order
+    public function user()
+    {
+        // If you have the staudenmeir/eloquent-has-many-deep package, use belongsToThrough
+        // Otherwise, fallback to accessing user via order
+        return $this->order ? $this->order->user : null;
+    }
 }

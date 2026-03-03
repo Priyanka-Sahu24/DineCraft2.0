@@ -27,12 +27,19 @@ style="height:220px; object-fit:cover;">
 ₹ {{ $item->price }}
 </p>
 
-<form method="POST" action="{{ route('cart.add',$item->id) }}">
-@csrf
-<button class="btn btn-orange w-100">
-Add to Cart
-</button>
-</form>
+
+@php
+	$canAddToCart = auth()->check() && auth()->user()->hasRole('customer');
+@endphp
+
+@if($canAddToCart)
+	<form method="POST" action="{{ route('cart.add',$item->id) }}">
+		@csrf
+		<button class="btn btn-orange w-100">Add to Cart</button>
+	</form>
+@else
+	<button class="btn btn-orange w-100" onclick="showLoginModal()">Add to Cart</button>
+@endif
 
 </div>
 </div>

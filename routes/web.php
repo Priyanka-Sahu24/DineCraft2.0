@@ -68,6 +68,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth','role:customer'])->group(function () {
 
+    Route::get('/my-payments', [CheckoutController::class, 'myPayments'])->name('my.payments');
+
     Route::get('/customer/dashboard', function () {
         return view('customer.dashboard');
     })->name('customer.dashboard');
@@ -90,6 +92,7 @@ Route::middleware(['auth','role:customer'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
+
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
@@ -111,6 +114,9 @@ Route::middleware(['auth','role:admin'])
         Route::get('/profile', function() {
             return view('admin.profile');
         })->name('profile');
+
+            // Payments page
+            Route::get('/payments', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments');
 
         Route::resource('staff', StaffController::class);
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);

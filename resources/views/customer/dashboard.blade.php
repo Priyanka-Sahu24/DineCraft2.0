@@ -20,8 +20,12 @@
 	<section class="py-5" style="background: #fffefb;">
 		<div class="container">
 			<h2 class="fw-bold text-orange mb-4">My Recent Orders</h2>
+			@php
+				$recentOrders = \App\Models\Order::where('user_id', auth()->id())->latest()->take(3)->get();
+			@endphp
 			<div class="card shadow border-0 rounded-4 overflow-hidden mb-4">
 				<div class="card-body p-0">
+					@if($recentOrders->count() > 0)
 					<div class="table-responsive">
 						<table class="table align-middle mb-0">
 							<thead class="table-light">
@@ -35,25 +39,35 @@
 								</tr>
 							</thead>
 							<tbody>
+							@foreach($recentOrders as $order)
 								<tr>
-									<td>ORD-12345</td>
-									<td>Dine-in</td>
-									<td><span class="badge bg-success px-3 py-2">Completed</span></td>
-									<td>₹ 1,250.00</td>
-									<td>25 Feb 2026</td>
-									<td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+									<td class="fw-semibold">{{ $order->order_number }}</td>
+									<td>{{ ucfirst($order->order_type) }}</td>
+									<td>
+										@php $status = strtolower($order->order_status); @endphp
+										@if($status == 'pending')
+											<span class="badge bg-warning text-dark px-3 py-2">Pending</span>
+										@elseif($status == 'preparing')
+											<span class="badge bg-info px-3 py-2">Preparing</span>
+										@elseif($status == 'completed')
+											<span class="badge bg-success px-3 py-2">Completed</span>
+										@elseif($status == 'cancelled')
+											<span class="badge bg-danger px-3 py-2">Cancelled</span>
+										@else
+											<span class="badge bg-secondary px-3 py-2">{{ ucfirst($status) }}</span>
+										@endif
+									</td>
+									<td>₹ {{ number_format($order->total,2) }}</td>
+									<td>{{ $order->created_at->format('d M Y') }}</td>
+									<td><a href="{{ route('order.track', $order->id) }}" class="btn btn-sm btn-outline-primary">View</a></td>
 								</tr>
-								<tr>
-									<td>ORD-12344</td>
-									<td>Takeaway</td>
-									<td><span class="badge bg-warning text-dark px-3 py-2">Pending</span></td>
-									<td>₹ 890.00</td>
-									<td>24 Feb 2026</td>
-									<td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
-								</tr>
+							@endforeach
 							</tbody>
 						</table>
 					</div>
+					@else
+						<div class="p-4 text-center text-muted">No recent orders yet.</div>
+					@endif
 				</div>
 			</div>
 			<a href="{{ route('my.orders') }}" class="btn btn-link text-orange fw-semibold">View All Orders</a>
@@ -64,8 +78,16 @@
 	<section class="py-5" style="background: #fff3e8;">
 		<div class="container">
 			<h2 class="fw-bold text-orange mb-4">Upcoming Reservations</h2>
+			@php
+				$upcomingReservations = \App\Models\Reservation::where('user_id', auth()->id())
+					->whereDate('reservation_date', '>=', now()->toDateString())
+					->orderBy('reservation_date')
+					->take(3)
+					->get();
+			@endphp
 			<div class="card shadow border-0 rounded-4 overflow-hidden mb-4">
 				<div class="card-body p-0">
+					@if($upcomingReservations->count() > 0)
 					<div class="table-responsive">
 						<table class="table align-middle mb-0">
 							<thead class="table-light">
@@ -78,23 +100,31 @@
 								</tr>
 							</thead>
 							<tbody>
+							@foreach($upcomingReservations as $reservation)
 								<tr>
-									<td>28 Feb 2026</td>
-									<td>7:30 PM</td>
-									<td>4</td>
-									<td><span class="badge bg-success px-3 py-2">Confirmed</span></td>
-									<td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+									<td>{{ \Carbon\Carbon::parse($reservation->reservation_date)->format('d M Y') }}</td>
+									<td>{{ $reservation->reservation_time }}</td>
+									<td>{{ $reservation->guest_count }}</td>
+									<td>
+										@if($reservation->status == 'confirmed')
+											<span class="badge bg-success px-3 py-2">Confirmed</span>
+										@elseif($reservation->status == 'pending')
+											<span class="badge bg-warning text-dark px-3 py-2">Pending</span>
+										@elseif($reservation->status == 'cancelled')
+											<span class="badge bg-danger px-3 py-2">Cancelled</span>
+										@else
+											<span class="badge bg-secondary px-3 py-2">{{ ucfirst($reservation->status) }}</span>
+										@endif
+									</td>
+									<td><a href="/reservations" class="btn btn-sm btn-outline-primary">View</a></td>
 								</tr>
-								<tr>
-									<td>01 Mar 2026</td>
-									<td>8:00 PM</td>
-									<td>2</td>
-									<td><span class="badge bg-warning text-dark px-3 py-2">Pending</span></td>
-									<td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
-								</tr>
+							@endforeach
 							</tbody>
 						</table>
 					</div>
+					@else
+						<div class="p-4 text-center text-muted">No upcoming reservations.</div>
+					@endif
 				</div>
 			</div>
 			<a href="/reservations" class="btn btn-link text-orange fw-semibold">View All Reservations</a>
@@ -105,27 +135,34 @@
 	<section class="py-5" style="background: #fffefb;">
 		<div class="container">
 			<h2 class="fw-bold text-orange mb-4">My Cart</h2>
+			@php
+				$cart = session('cart', []);
+			@endphp
 			<div class="card shadow border-0 rounded-4 overflow-hidden mb-4">
 				<div class="card-body">
-					<div class="d-flex align-items-center mb-3">
-						<img src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png" width="48" class="me-3">
-						<div>
-							<div class="fw-semibold">Margherita Pizza x2</div>
-							<div class="text-muted small">₹ 500.00 each</div>
+					@if(count($cart) > 0)
+						@php $grandTotal = 0; @endphp
+						@foreach($cart as $item)
+							@php
+								$total = $item['price'] * $item['quantity'];
+								$grandTotal += $total;
+							@endphp
+							<div class="d-flex align-items-center mb-3">
+								<img src="{{ isset($item['image']) ? asset('storage/'.$item['image']) : 'https://cdn-icons-png.flaticon.com/512/1170/1170678.png' }}" width="48" class="me-3">
+								<div>
+									<div class="fw-semibold">{{ $item['name'] }} x{{ $item['quantity'] }}</div>
+									<div class="text-muted small">₹ {{ number_format($item['price'],2) }} each</div>
+								</div>
+								<span class="ms-auto fw-bold">₹ {{ number_format($total,2) }}</span>
+							</div>
+						@endforeach
+						<div class="text-end mt-3">
+							<span class="fw-bold">Total: ₹ {{ number_format($grandTotal,2) }}</span>
+							<a href="/cart" class="btn btn-orange ms-3">Go to Cart</a>
 						</div>
-						<span class="ms-auto fw-bold">₹ 1,000.00</span>
-					</div>
-					<div class="d-flex align-items-center mb-3">
-						<img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" width="48" class="me-3">
-						<div>
-							<div class="fw-semibold">Paneer Tikka x1</div>
-							<div class="text-muted small">₹ 350.00 each</div>
-						</div>
-						<span class="ms-auto fw-bold">₹ 350.00</span>
-					</div>
-					<div class="text-end">
-						<a href="/cart" class="btn btn-orange">Go to Cart</a>
-					</div>
+					@else
+						<div class="p-4 text-center text-muted">Your cart is empty.</div>
+					@endif
 				</div>
 			</div>
 		</div>
